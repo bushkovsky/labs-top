@@ -7,21 +7,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Engines;
 public class ImpulsiveEngineE : IImpulsiveEngine
 {
     private const int StartFuelConsumption = 20;
+    private const int MassReverseCoefficient = 20;
     private int _distance;
 
     public ImpulsiveEngineE(int fuelVolume, int weight)
     {
-        _distance = ((int)System.Math.Exp(fuelVolume) - StartFuelConsumption) - (AccelerationCosts(fuelVolume) / (weight / 20)); // коэфициенты сделать
-    }
-
-    public bool IsSuccessfulStart(FuelTank fuelTank)
-    {
-        return fuelTank.FuelVolume >= StartFuelConsumption;
-    }
-
-    public int Start(FuelTank fuelTank)
-    {
-        return fuelTank.FuelVolume - StartFuelConsumption;
+        _distance = ((int)System.Math.Exp(fuelVolume) - StartFuelConsumption) - (AccelerationCosts(fuelVolume) / (weight / MassReverseCoefficient));
     }
 
     public void Flight(SpacePartRoute partRoute)
@@ -29,11 +20,17 @@ public class ImpulsiveEngineE : IImpulsiveEngine
         _distance -= partRoute.Distance;
     }
 
-    public bool IsSuccessfulFlight(SpacePartRoute partRoute)
+    public void Flight(SpacePartRoute partRoute, FuelTank fuelTank)
     {
-        return (partRoute.EnvironmentOfPart.GetType() == typeof(NitrineParticleNebulae) ||
-                partRoute.EnvironmentOfPart.GetType() == typeof(Space))
-               && _distance - partRoute.Distance >= 0;
+        _distance = Start(fuelTank);
+        _distance -= partRoute.Distance;
+    }
+
+    public bool IsSuccessfulFlight(SpacePartRoute partRoute, FuelTank fuelTank)
+    {
+        return IsSuccessfulStart(fuelTank) && ((partRoute.EnvironmentOfPart is NitrineParticleNebulae ||
+                                                partRoute.EnvironmentOfPart is Space)
+                                               && _distance - partRoute.Distance >= 0);
     }
 
     public double FuelConsumption(SpacePartRoute partRoute, FuelTank? fuelTank)
@@ -55,5 +52,15 @@ public class ImpulsiveEngineE : IImpulsiveEngine
     private static int AccelerationCosts(int fuelVolume)
     {
         return (int)System.Math.Log(fuelVolume - StartFuelConsumption);
+    }
+
+    private static int Start(FuelTank fuelTank)
+    {
+        return fuelTank.FuelVolume - StartFuelConsumption;
+    }
+
+    private static bool IsSuccessfulStart(FuelTank fuelTank)
+    {
+        return fuelTank.FuelVolume >= StartFuelConsumption;
     }
 }

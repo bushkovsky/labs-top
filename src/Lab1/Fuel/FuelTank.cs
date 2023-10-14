@@ -2,6 +2,20 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Fuel;
 
 public class FuelTank
 {
-    public int FuelVolume { get; set; }
-    public FuelType Type { get; init; }
+    public FuelTank(int fuetlvolume)
+    {
+        FuelVolume = fuetlvolume;
+    }
+
+    public int FuelVolume { get; private set; }
+
+    public void DecreaseFuetlVolume(int decrease)
+    {
+        FuelVolume -= decrease;
+    }
+
+    public void ChangeFuelVolume(int change)
+    {
+        FuelVolume = change;
+    }
 }

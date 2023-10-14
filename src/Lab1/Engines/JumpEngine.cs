@@ -23,8 +23,7 @@ public class JumpEngine : IEngine
 
     public bool IsSuccessfulFlight(PartRoute.SpacePartRoute partRoute)
     {
-        return _distance - partRoute.Distance >= 0 && partRoute.EnvironmentOfPart.GetType() ==
-                                                   typeof(NebulaeOfIncreasedDensityOfSpace);
+        return _distance - partRoute.Distance >= 0 && partRoute.EnvironmentOfPart is NebulaeOfIncreasedDensityOfSpace;
     }
 
     public double FlightTime()

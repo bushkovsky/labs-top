@@ -7,11 +7,15 @@ public class PhotonModification : IModification
      private const int AntimatterFlaresDamage = 1;
      private int _healthPoint = 3;
 
-     public void GetDamage(IPhotonObstacle obstacle)
+     public void GetDamage(IPhotonObstacle? obstacle)
      {
-          if (obstacle.GetType() == typeof(AntimatterFlares))
+          if (obstacle is null) return;
+          for (int i = 0; i < obstacle.Count; i++)
           {
-               _healthPoint -= AntimatterFlaresDamage;
+               if (obstacle is AntimatterFlares)
+               {
+                    _healthPoint -= AntimatterFlaresDamage;
+               }
           }
      }
 

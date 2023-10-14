@@ -3,16 +3,31 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Environment;
 
 public abstract class AbstractEnvironment
 {
-    protected AbstractEnvironment(int meteorites, int asteroids, int spaceWhales, int antimatterFlares)
+    private IObstacles[] environmentObstacles;
+    private IPhotonObstacle[] environmentPhotonObstacles;
+    protected AbstractEnvironment(IObstacles[] environmentObstacles, IPhotonObstacle[] environmentPhotonObstacles)
     {
-        Meteorites = new Meteorites() { Count = meteorites };
-        SpaceWhales = new SpaceWhale() { Count = spaceWhales };
-        Asteroids = new Asteroids() { Count = asteroids };
-        AntimatterFlares = new AntimatterFlares() { Count = antimatterFlares };
+        this.environmentObstacles = environmentObstacles;
+        this.environmentPhotonObstacles = environmentPhotonObstacles;
     }
 
-    public Meteorites Meteorites { get; } // init remove pls
-    public Asteroids Asteroids { get; init; }
-    public SpaceWhale SpaceWhales { get; init; }
-    public AntimatterFlares AntimatterFlares { get; init; }
+    public IObstacles? GetObstacleByIndex(int index)
+    {
+        return index < environmentObstacles.Length ? environmentObstacles[index] : null;
+    }
+
+    public IPhotonObstacle? GetPhotonObstacleByIndex(int index)
+    {
+        return index < environmentPhotonObstacles.Length ? environmentPhotonObstacles[index] : null;
+    }
+
+    public int ObstaclesCount()
+    {
+        return environmentObstacles.Length;
+    }
+
+    public int PhotonObstaclesCount()
+    {
+        return environmentPhotonObstacles.Length;
+    }
 }

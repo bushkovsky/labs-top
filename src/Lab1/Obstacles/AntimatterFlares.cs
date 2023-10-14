@@ -2,5 +2,10 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
 public class AntimatterFlares : IPhotonObstacle
 {
-    public int Count { get; set; }
+    public AntimatterFlares(int count)
+    {
+        Count = count;
+    }
+
+    public int Count { get; }
 }

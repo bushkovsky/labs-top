@@ -20,34 +20,33 @@ public class Deflector3 : IDeflector
     public int HealthPoint => _healthPoint;
     public int StartHealthPoint { get; } = SpaceWhaleDamage + 1;
 
-    public void GetDamage(IObstacles obstacles)
+    public void GetDamage(IObstacles? obstacles)
     {
-        if (obstacles.GetType() == typeof(Asteroids))
+        if (obstacles is null) return;
+        for (int i = 0; i < obstacles.Count; i++)
         {
-            _healthPoint -= AsteroidDamage;
-            return;
-        }
+            if (obstacles is Asteroids)
+            {
+                _healthPoint -= AsteroidDamage;
+                return;
+            }
 
-        if (obstacles.GetType() == typeof(Meteorites))
-        {
-            _healthPoint -= MeteoriteDamage;
-            return;
-        }
+            if (obstacles is Meteorites)
+            {
+                _healthPoint -= MeteoriteDamage;
+                return;
+            }
 
-        if (obstacles.GetType() == typeof(SpaceWhale))
-        {
-            _healthPoint -= SpaceWhaleDamage;
-        }
-
-        if (_healthPoint > 0)
-        {
-            obstacles.Count -= 1;
+            if (obstacles is SpaceWhale)
+            {
+                _healthPoint -= SpaceWhaleDamage;
+            }
         }
     }
 
-    public void GetDamage(IPhotonObstacle photonObstacle)
+    public void GetDamage(IPhotonObstacle? photonObstacle)
     {
-        _modification?.GetDamage(photonObstacle); // ?
+        _modification?.GetDamage(photonObstacle);
     }
 
     public bool IsAlive()

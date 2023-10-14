@@ -8,5 +8,5 @@ public interface IDeflector : IArmour
     public void DestroyModification();
 
     public bool ModificationExist();
-    public void GetDamage(IPhotonObstacle photonObstacle);
+    public void GetDamage(IPhotonObstacle? photonObstacle);
 }

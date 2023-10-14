@@ -17,20 +17,19 @@ public class SpaceshipHull1 : IArmour
     public int HealthPoint => _healthPoint;
     public int StartHealthPoint { get; } = AsteroidsDamage + 1;
 
-    public void GetDamage(IObstacles obstacles)
+    public void GetDamage(IObstacles? obstacles)
     {
-        if (obstacles.GetType() == typeof(Asteroids))
+        if (obstacles is null) return;
+        for (int i = 0; i < obstacles.Count; i++)
         {
-            _healthPoint -= AsteroidsDamage;
-        }
-        else
-        {
-            _healthPoint = HullIsDestroy;
-        }
-
-        if (_healthPoint > 0)
-        {
-            obstacles.Count -= 1;
+            if (obstacles is Asteroids)
+            {
+                _healthPoint -= AsteroidsDamage;
+            }
+            else
+            {
+                _healthPoint = HullIsDestroy;
+            }
         }
     }
 

@@ -6,6 +6,6 @@ public interface IArmour
 {
     public int HealthPoint => 0;
     public int StartHealthPoint { get; }
-    public void GetDamage(IObstacles obstacles);
+    public void GetDamage(IObstacles? obstacles);
     public bool IsAlive();
 }

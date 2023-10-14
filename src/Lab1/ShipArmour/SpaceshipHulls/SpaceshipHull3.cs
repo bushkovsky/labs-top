@@ -18,28 +18,27 @@ public class SpaceshipHull3 : IArmour
     public int HealthPoint => _healthPoint;
     public int StartHealthPoint { get; } = (AsteroidsDamage * MeteoritesDamage) + 1;
 
-    public void GetDamage(IObstacles obstacles)
+    public void GetDamage(IObstacles? obstacles)
     {
-        if (obstacles.GetType() == typeof(Asteroids))
+        if (obstacles is null) return;
+        for (int i = 0; i < obstacles.Count; i++)
         {
-            _healthPoint -= AsteroidsDamage;
-            return;
-        }
+            if (obstacles is Asteroids)
+            {
+                _healthPoint -= AsteroidsDamage;
+                return;
+            }
 
-        if (obstacles.GetType() == typeof(Meteorites))
-        {
-            _healthPoint -= MeteoritesDamage;
-            return;
-        }
+            if (obstacles is Meteorites)
+            {
+                _healthPoint -= MeteoritesDamage;
+                return;
+            }
 
-        if (obstacles.GetType() == typeof(SpaceWhale))
-        {
-            _healthPoint = HullIsDestroy;
-        }
-
-        if (_healthPoint > 0)
-        {
-            obstacles.Count -= 1;
+            if (obstacles is SpaceWhale)
+            {
+                _healthPoint = HullIsDestroy;
+            }
         }
     }
 

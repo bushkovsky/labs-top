@@ -2,5 +2,10 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
 public class Meteorites : IObstacles
 {
-    public int Count { get; set; }
+    public Meteorites(int count)
+    {
+        Count = count;
+    }
+
+    public int Count { get; }
 }

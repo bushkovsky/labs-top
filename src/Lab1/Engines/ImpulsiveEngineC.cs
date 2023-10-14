@@ -7,21 +7,18 @@ public class ImpulsiveEngineC : IImpulsiveEngine
 {
     private const int FixSpeed = 55;
     private const int StartFuelConsumption = 10;
+    private const int MassReverseCoefficient = 20;
     private int _distance;
 
     public ImpulsiveEngineC(int fuelVolume, int weight)
     {
-        _distance = (fuelVolume / (weight / 20)) - StartFuelConsumption;
+        _distance = (fuelVolume / (weight / MassReverseCoefficient)) - StartFuelConsumption;
     }
 
-    public bool IsSuccessfulStart(FuelTank fuelTank)
+    public void Flight(PartRoute.SpacePartRoute partRoute, FuelTank fuelTank)
     {
-        return fuelTank.FuelVolume >= StartFuelConsumption;
-    }
-
-    public int Start(FuelTank fuelTank)
-    {
-        return fuelTank.FuelVolume - StartFuelConsumption;
+        _distance = Start(fuelTank);
+        _distance -= partRoute.Distance;
     }
 
     public void Flight(PartRoute.SpacePartRoute partRoute)
@@ -29,10 +26,10 @@ public class ImpulsiveEngineC : IImpulsiveEngine
         _distance -= partRoute.Distance;
     }
 
-    public bool IsSuccessfulFlight(PartRoute.SpacePartRoute partRoute)
+    public bool IsSuccessfulFlight(PartRoute.SpacePartRoute partRoute, FuelTank fuelTank)
     {
-        return partRoute.EnvironmentOfPart.GetType() == typeof(Space)
-               && -_distance - partRoute.Distance >= 0;
+        return IsSuccessfulStart(fuelTank) && (partRoute.EnvironmentOfPart is Space
+               && -_distance - partRoute.Distance >= 0);
     }
 
     public double FuelConsumption(PartRoute.SpacePartRoute partRoute, FuelTank? fuelTank)
@@ -48,5 +45,15 @@ public class ImpulsiveEngineC : IImpulsiveEngine
     public int FlightTime(PartRoute.SpacePartRoute partRoute, FuelTank? fuelTank)
     {
         return _distance / FixSpeed;
+    }
+
+    private static int Start(FuelTank fuelTank)
+    {
+        return fuelTank.FuelVolume - StartFuelConsumption;
+    }
+
+    private static bool IsSuccessfulStart(FuelTank fuelTank)
+    {
+        return fuelTank.FuelVolume >= StartFuelConsumption;
     }
 }

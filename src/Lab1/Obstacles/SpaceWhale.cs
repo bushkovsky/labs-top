@@ -2,5 +2,10 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 
 public class SpaceWhale : IObstacles
 {
-    public int Count { get; set; }
+    public SpaceWhale(int count)
+    {
+        Count = count;
+    }
+
+    public int Count { get; }
 }
