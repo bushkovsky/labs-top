@@ -8,15 +8,15 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
 
 public class Lab1Tests
 {
-    [Theory]
-    [InlineData(100, 0, 100, 100)]
-    public void ShouldFlight(int distance, int countAntimatterFlares, int activePlasmaVolume, int gravitoMatterVolume)
+    public static System.Collections.Generic.IEnumerable<object[]> ShouldFlightCase()
     {
-        SpacePartRoute[] route = { new SpacePartRoute(distance, new NebulaeOfIncreasedDensityOfSpace(countAntimatterFlares)) };
+        yield return new object[] { new[] { new SpacePartRoute(100, new NebulaeOfIncreasedDensityOfSpace(1)) }, new PleasureShuttle(100), new Avgur(100, 100, null) };
+    }
 
-        var pleasureShuttle = new PleasureShuttle(activePlasmaVolume);
-        var avgur = new Avgur(activePlasmaVolume, gravitoMatterVolume, null);
-
+    [Theory]
+    [MemberData(nameof(ShouldFlightCase))]
+    public void ShouldFlight(SpacePartRoute[] route, PleasureShuttle pleasureShuttle, Avgur avgur)
+    {
         Assert.False(pleasureShuttle.Flight(route).Item3.Item1);
         Assert.False(avgur.Flight(route).Item3.Item1);
     }
