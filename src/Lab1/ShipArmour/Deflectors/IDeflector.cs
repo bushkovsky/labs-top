@@ -6,7 +6,6 @@ public interface IDeflector : IArmour
 {
     public bool ModificationIsAlive();
     public void DestroyModification();
-
+    public void GetDamageAntimitter(IObstacles obstacle);
     public bool ModificationExist();
-    public void GetDamage(IPhotonObstacle? photonObstacle);
 }

@@ -1,12 +1,14 @@
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab1.PartRoute;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Route;
 
 public class SpaceRoute
 {
-    private readonly SpacePartRoute[] _route;
-    public SpaceRoute(SpacePartRoute[] routes)
+    public SpaceRoute(IList<SpacePartRoute> route)
     {
-        _route = routes;
+        Route = route;
     }
+
+    public IList<SpacePartRoute> Route { get; }
 }

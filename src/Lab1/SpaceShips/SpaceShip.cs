@@ -1,167 +1,86 @@
 using Itmo.ObjectOrientedProgramming.Lab1.Engines;
-using Itmo.ObjectOrientedProgramming.Lab1.Environment;
 using Itmo.ObjectOrientedProgramming.Lab1.Fuel;
 using Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.PartRoute;
 using Itmo.ObjectOrientedProgramming.Lab1.ShipArmour;
 using Itmo.ObjectOrientedProgramming.Lab1.ShipArmour.Deflectors;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceShips.Dto;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceShips;
 
-public class SpaceShip : ISpaceShip
+public class SpaceShip
 {
-    private IImpulsiveEngine _impulsiveEngine;
-    private JumpEngine? _jumpEngine;
-
-    private IDeflector? _deflector;
-    private IArmour _spaceShipHull;
-
-    private FuelTank? shuttleFuelTankActivePlasma;
-    private FuelTank? shuttleFuelTankGravitonMatter;
-
-    private bool _antinitrineEmitter;
-
-    protected SpaceShip(FuelTank? shuttleFuelTankActivePlasma, FuelTank? shuttleFuelTankGravitonMatter, IImpulsiveEngine impulsiveEngine, JumpEngine? jumpEngine, IDeflector? deflector, IArmour spaceShipHull, bool antinitrineEmitter)
+    private readonly bool _antinitrineEmitter;
+    public SpaceShip(FuelTank shuttleFuelTankActivePlasma, FuelTank shuttleFuelTankGravitonMatter, IImpulsiveEngine impulsiveEngine, JumpEngine? jumpEngine, IDeflector? deflector, IArmour spaceShipHull, bool antinitrineEmitter)
     {
-        this.shuttleFuelTankActivePlasma = shuttleFuelTankActivePlasma;
-        this.shuttleFuelTankGravitonMatter = shuttleFuelTankGravitonMatter;
-        _impulsiveEngine = impulsiveEngine;
-        _jumpEngine = jumpEngine;
-        _deflector = deflector;
-        _spaceShipHull = spaceShipHull;
+        ShuttleFuelTankActivePlasma = shuttleFuelTankActivePlasma;
+        ShuttleFuelTankGravitonMatter = shuttleFuelTankGravitonMatter;
+        ImpulsiveEngine = impulsiveEngine;
+        JumpEngine = jumpEngine;
+        Deflector = deflector;
+        SpaceShipHull = spaceShipHull;
         _antinitrineEmitter = antinitrineEmitter;
         StartDistance = jumpEngine?.StartDistance ?? 0;
     }
 
+    public IImpulsiveEngine ImpulsiveEngine { get; set; }
+    public JumpEngine? JumpEngine { get; private set; }
+    public IDeflector? Deflector { get; private set; }
+    public IArmour SpaceShipHull { get; private set; }
+    public FuelTank ShuttleFuelTankActivePlasma { get; private set; }
+    public FuelTank ShuttleFuelTankGravitonMatter { get; private set; }
     public int StartDistance { get; }
 
-    public IArmour? SpaceShipHull => _spaceShipHull;
-
-    public (bool, bool, (bool, (double, int))) Flight(SpacePartRoute[] spaceRoute)
+    // public IArmour? SpaceShipHull => _spaceShipHull;
+    public void ArmourGetDamage(IArmour armour, IObstacles obstacle)
     {
-        (bool, bool, (bool, (double, int))) flightResult = (true, true, (true, (0, 0)));
-        for (int i = 0; i < spaceRoute.Length; i++)
+        if (!_antinitrineEmitter && obstacle is SpaceWhale) armour.GetDamage(obstacle);
+        else if (obstacle is not SpaceWhale) armour.GetDamage(obstacle);
+
+        if (Deflector is not null && !Deflector.IsAlive())
         {
-            flightResult.Item1 = flightResult.Item1 && AntimatterFlaresDamage(spaceRoute[i]);
-            flightResult.Item2 = flightResult.Item2 && ArmourDamage(spaceRoute[i]);
-            flightResult.Item3.Item1 = flightResult.Item3.Item1 && FlightTrough(spaceRoute[i]).CheckFlight;
-            flightResult.Item3.Item2.Item1 += FlightTrough(spaceRoute[i]).Succes.Time;
-            flightResult.Item3.Item2.Item2 += FlightTrough(spaceRoute[i]).Succes.FuelConsumedVolume;
-        }
-
-        return flightResult;
-    }
-
-    public double ShipFuelConsumption(SpacePartRoute partRoute)
-    {
-        return _impulsiveEngine.FuelConsumption(partRoute, shuttleFuelTankActivePlasma);
-    }
-
-    private void ArmourGetDamage(IArmour armour, SpacePartRoute partRoute)
-    {
-        for (int i = 0; i < partRoute.EnvironmentOfPart.ObstaclesCount(); i++)
-        {
-            if (!_antinitrineEmitter && partRoute.EnvironmentOfPart.GetObstacleByIndex(i) is SpaceWhale) armour.GetDamage(partRoute.EnvironmentOfPart.GetObstacleByIndex(i));
+            Deflector = null;
         }
     }
 
-    private bool ShipIsAlive()
+    public void GetDamageAntimatterFlares(IObstacles photonObstacle)
     {
-        return _spaceShipHull.IsAlive();
+        if (Deflector is null) return;
+
+        Deflector.GetDamage(photonObstacle);
+
+        if (!(Deflector.ModificationIsAlive() || photonObstacle.Count == 0))
+        {
+            Deflector.DestroyModification();
+        }
     }
 
-    private bool ArmourDamage(SpacePartRoute partRoute)
+    public ResultFLightDto FlightTroughNebulaeOfIncreasedDensityOfSpace(SpacePartRoute partRoute)
     {
-        if (_deflector is not null)
+        if (JumpEngine is not null)
         {
-            ArmourGetDamage(_deflector, partRoute);
-
-            if (!_deflector.IsAlive())
+            JumpEngine.Flight(partRoute);
+            if (JumpEngine.IsSuccessfulFlight(partRoute))
             {
-                _deflector = null;
+                ShuttleFuelTankGravitonMatter.DecreaseFuetlVolume(
+                        JumpEngine.FuelConsumption(partRoute, ShuttleFuelTankGravitonMatter));
+
+                return new ResultFLightDto(JumpEngine.FuelConsumption(partRoute, ShuttleFuelTankGravitonMatter), true, JumpEngine.FlightTime());
             }
         }
 
-        if (_deflector is null && _spaceShipHull is not null)
-        {
-            ArmourGetDamage(_spaceShipHull, partRoute);
-        }
-
-        return ShipIsAlive();
+        return new ResultFLightDto(0, false, 0);
     }
 
-    private bool AntimatterFlaresDamage(SpacePartRoute partRoute)
+    public ResultFLightDto FlightThroughEnvironment(SpacePartRoute partRoute)
     {
-        bool result = true;
-        for (int i = 0; i < partRoute.EnvironmentOfPart.PhotonObstaclesCount(); i++)
+        if (ImpulsiveEngine.IsSuccessfulFlight(partRoute, ShuttleFuelTankActivePlasma))
         {
-            for (int j = 0; j < partRoute.EnvironmentOfPart.GetPhotonObstacleByIndex(i)?.Count; j++)
-            {
-                if (_deflector is not null)
-                {
-                    _deflector.GetDamage(partRoute.EnvironmentOfPart.GetPhotonObstacleByIndex(i));
-
-                    if (!(_deflector.ModificationIsAlive() ||
-                          partRoute.EnvironmentOfPart.GetPhotonObstacleByIndex(i)?.Count == 0))
-                    {
-                        _deflector.DestroyModification();
-                    }
-
-                    result &= _deflector.ModificationIsAlive() ||
-                              partRoute.EnvironmentOfPart.GetPhotonObstacleByIndex(i)?.Count == 0;
-
-                    if (!result) return result;
-                }
-                else
-                {
-                    result &= partRoute.EnvironmentOfPart.GetPhotonObstacleByIndex(i)?.Count == 0;
-                    return result;
-                }
-            }
+            ImpulsiveEngine.Flight(partRoute, ShuttleFuelTankActivePlasma);
+            ShuttleFuelTankActivePlasma.DecreaseFuetlVolume((int)ImpulsiveEngine.FuelConsumption(partRoute, ShuttleFuelTankGravitonMatter));
+            return new ResultFLightDto(ImpulsiveEngine.FuelConsumption(partRoute, ShuttleFuelTankGravitonMatter), true, ImpulsiveEngine.FlightTime(partRoute, ShuttleFuelTankActivePlasma));
         }
 
-        return result;
-    }
-
-    private (bool CheckFlight, (double Time, int FuelConsumedVolume) Succes) FlightTroughNebulaeOfIncreasedDensityOfSpace(SpacePartRoute partRoute)
-    {
-        if (_jumpEngine is not null)
-        {
-            _jumpEngine.Flight(partRoute);
-            if (_jumpEngine.IsSuccessfulFlight(partRoute))
-            {
-                shuttleFuelTankGravitonMatter?.DecreaseFuetlVolume(
-                        _jumpEngine.FuelConsumption(partRoute, shuttleFuelTankGravitonMatter));
-
-                return (true,
-                    (_jumpEngine.FlightTime(), _jumpEngine.FuelConsumption(partRoute, shuttleFuelTankGravitonMatter)));
-            }
-        }
-
-        return (false, (0, 0));
-    }
-
-    private (bool CheckFlight, (int Time, int FuelConsumedVolume) Succes) FlightThroughEnvironment(SpacePartRoute partRoute)
-    {
-        if (shuttleFuelTankActivePlasma is not null && _impulsiveEngine.IsSuccessfulFlight(partRoute, shuttleFuelTankActivePlasma))
-        {
-            _impulsiveEngine.Flight(partRoute, shuttleFuelTankActivePlasma);
-            shuttleFuelTankActivePlasma.DecreaseFuetlVolume((int)_impulsiveEngine.FuelConsumption(partRoute, shuttleFuelTankGravitonMatter));
-            return (true,
-                    (_impulsiveEngine.FlightTime(partRoute, shuttleFuelTankActivePlasma), (int)_impulsiveEngine.FuelConsumption(partRoute, shuttleFuelTankGravitonMatter)));
-        }
-
-        return (false, (0, 0));
-    }
-
-    private (bool CheckFlight, (double Time, int FuelConsumedVolume) Succes) FlightTrough(SpacePartRoute partRoute)
-    {
-        if (partRoute.EnvironmentOfPart is NebulaeOfIncreasedDensityOfSpace)
-           return FlightTroughNebulaeOfIncreasedDensityOfSpace(partRoute);
-
-        if (partRoute.EnvironmentOfPart is Space || partRoute.EnvironmentOfPart is NitrineParticleNebulae)
-            return FlightThroughEnvironment(partRoute);
-
-        return (false, (0, 0));
+        return new ResultFLightDto(0, false, 0);
     }
 }

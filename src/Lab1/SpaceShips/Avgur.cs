@@ -10,6 +10,13 @@ public class Avgur : SpaceShip
     private const int Weight = 600;
 
     public Avgur(int activePlasmaVolume, int gravitonMatterVolume, PhotonModification? photonModification)
-        : base(new FuelTank(activePlasmaVolume), new FuelTank(gravitonMatterVolume), new ImpulsiveEngineC(activePlasmaVolume, Weight), new Alpha(gravitonMatterVolume, Weight), new Deflector3(photonModification), new SpaceshipHull3(), false)
+        : base(
+            new FuelTank(activePlasmaVolume),
+            new FuelTank(gravitonMatterVolume),
+            new ImpulsiveEngineC(activePlasmaVolume, Weight),
+            new Alpha(gravitonMatterVolume, Weight),
+            new DeflectorThree(photonModification),
+            new SpaceshipHullThree(),
+            false)
     { }
 }

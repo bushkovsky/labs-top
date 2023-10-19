@@ -7,9 +7,16 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceShips;
 
 public class Meridian : SpaceShip
 {
+    private const int NoGravitonMatter = 0;
     private const int Weight = 350;
-
     public Meridian(int activePlasmaVolume, PhotonModification? photonModification)
-        : base(new FuelTank(activePlasmaVolume), null, new ImpulsiveEngineE(activePlasmaVolume, Weight), null, new Deflector2(photonModification), new SpaceshipHull2(), true)
+        : base(
+            new FuelTank(activePlasmaVolume),
+            new FuelTank(NoGravitonMatter),
+            new ImpulsiveEngineE(activePlasmaVolume, Weight),
+            null,
+            new DeflectorTwo(photonModification),
+            new SpaceshipHullTwo(),
+            true)
     { }
 }

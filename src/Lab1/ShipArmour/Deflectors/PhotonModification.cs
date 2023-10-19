@@ -7,9 +7,8 @@ public class PhotonModification : IModification
      private const int AntimatterFlaresDamage = 1;
      private int _healthPoint = 3;
 
-     public void GetDamage(IPhotonObstacle? obstacle)
+     public void GetDamage(IObstacles obstacle)
      {
-          if (obstacle is null) return;
           for (int i = 0; i < obstacle.Count; i++)
           {
                if (obstacle is AntimatterFlares)
@@ -22,10 +21,5 @@ public class PhotonModification : IModification
      public bool IsAlive()
      {
           return _healthPoint > 0;
-     }
-
-     public bool IsCrewDeath()
-     {
-          return _healthPoint < 0;
      }
 }

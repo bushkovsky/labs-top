@@ -4,6 +4,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.ShipArmour.Deflectors;
 
 public interface IModification
 {
-    public void GetDamage(IPhotonObstacle? obstacle);
+    public void GetDamage(IObstacles obstacle);
     public bool IsAlive();
 }

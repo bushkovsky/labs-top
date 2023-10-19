@@ -6,8 +6,16 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceShips;
 
 public class PleasureShuttle : SpaceShip
 {
+    private const int NoGravitonMatter = 0;
     private const int Weight = 100;
     public PleasureShuttle(int activePlasmaVolume)
-        : base(new FuelTank(activePlasmaVolume), null, new ImpulsiveEngineC(activePlasmaVolume, Weight), null, null, new SpaceshipHull1(), false)
+        : base(
+            new FuelTank(activePlasmaVolume),
+            new FuelTank(NoGravitonMatter),
+            new ImpulsiveEngineC(activePlasmaVolume, Weight),
+            null,
+            null,
+            new SpaceshipHullOne(),
+            false)
     { }
 }

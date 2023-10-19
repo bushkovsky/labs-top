@@ -1,33 +1,18 @@
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab1.Obstacles;
 namespace Itmo.ObjectOrientedProgramming.Lab1.Environment;
 
 public abstract class AbstractEnvironment
 {
-    private IObstacles[] environmentObstacles;
-    private IPhotonObstacle[] environmentPhotonObstacles;
-    protected AbstractEnvironment(IObstacles[] environmentObstacles, IPhotonObstacle[] environmentPhotonObstacles)
+    protected AbstractEnvironment(IList<IObstacles> environmentObstacles)
     {
-        this.environmentObstacles = environmentObstacles;
-        this.environmentPhotonObstacles = environmentPhotonObstacles;
+        EnvironmentObstacles = environmentObstacles;
     }
 
-    public IObstacles? GetObstacleByIndex(int index)
-    {
-        return index < environmentObstacles.Length ? environmentObstacles[index] : null;
-    }
-
-    public IPhotonObstacle? GetPhotonObstacleByIndex(int index)
-    {
-        return index < environmentPhotonObstacles.Length ? environmentPhotonObstacles[index] : null;
-    }
+    public IList<IObstacles> EnvironmentObstacles { get; }
 
     public int ObstaclesCount()
     {
-        return environmentObstacles.Length;
-    }
-
-    public int PhotonObstaclesCount()
-    {
-        return environmentPhotonObstacles.Length;
+        return EnvironmentObstacles.Count;
     }
 }
