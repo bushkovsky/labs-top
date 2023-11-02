@@ -23,7 +23,7 @@ public class SpaceShip
         StartDistance = jumpEngine?.StartDistance ?? 0;
     }
 
-    public IImpulsiveEngine ImpulsiveEngine { get; set; }
+    public IImpulsiveEngine ImpulsiveEngine { get; private set; }
     public JumpEngine? JumpEngine { get; private set; }
     public IDeflector? Deflector { get; private set; }
     public IArmour SpaceShipHull { get; private set; }

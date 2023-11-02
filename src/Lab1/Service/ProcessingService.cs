@@ -20,21 +20,27 @@ public class ProcessingService
 
     public ResultDto Flight()
     {
-        var flightResult = new ResultDto(true, true, true, 0, 0);
+        bool shipGotLost = true;
+        double time = 0;
+        double fuelConsuption = 0;
+
+        bool shipIsDestroy = true;
+        bool crewDeath = true;
         for (int i = 0; i < _spaceRoute.Route.Count; i++)
         {
             ResultFLightDto resultShipGotLost = FlightTrough(_spaceRoute.Route[i]);
-            flightResult.ShipGotLost &= resultShipGotLost.Result;
-            flightResult.Time += resultShipGotLost.Time;
-            flightResult.FuelConsumedVolume += resultShipGotLost.FuelConsuption;
+            shipGotLost &= resultShipGotLost.Result;
+            time += resultShipGotLost.Time;
+            fuelConsuption += resultShipGotLost.FuelConsuption;
 
             foreach (IObstacles a in _spaceRoute.Route[i].EnvironmentOfPart.EnvironmentObstacles)
             {
-                if (a is IPhysicalObstacle) flightResult.ShipIsDestroy &= ArmourDamageGet(a);
-                if (a is IPhotonObstacle) flightResult.CrewDeath &= AntimatterDamageGet(a);
+                if (a is IPhysicalObstacle) shipIsDestroy &= ArmourDamageGet(a);
+                if (a is IPhotonObstacle) crewDeath &= AntimatterDamageGet(a);
             }
         }
 
+        var flightResult = new ResultDto(crewDeath, shipIsDestroy, shipGotLost, time, fuelConsuption);
         return flightResult;
     }
 
