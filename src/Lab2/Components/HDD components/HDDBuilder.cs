@@ -2,12 +2,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components.HDDcomponents;
 
 public class HDDBuilder : IHDDBuilder
 {
-    /*
-     *    public string Name { get; }
-    public int Memory { get; }
-    public int RotationSpeed { get; }
-    public int Power { get; }
-     */
     private HDD _hdd = new HDD(" ");
 
     public HDDBuilder(string productName)

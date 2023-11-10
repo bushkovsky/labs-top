@@ -2,11 +2,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components.PowerSupplycomponents;
 
 public class PowerSupplyBuilder : IPowerSupplyBuilder
 {
-    /*
-     * public string Name { get; }
-    public int LoadPower { get; private set; }
-     */
-
     private PowerSupply _powerSupply = new PowerSupply(" ");
 
     public PowerSupplyBuilder(string name)

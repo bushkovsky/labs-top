@@ -4,13 +4,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components;
 
 public class BIOSBilder : IBIOSBilder
 {
-    /*
-     *   public string Name { get; }
-    public string Type { get; private set; } = " ";
-    public string Version { get; private set; } = " ";
-    public IList<CPU> SupportedProcessors { get; private set; }
-     */
-
     private BIOS _bios = new BIOS(" ", new List<string>());
 
     public BIOSBilder(string name, IList<string> cpus)

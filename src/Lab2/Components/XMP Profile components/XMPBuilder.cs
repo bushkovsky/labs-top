@@ -2,13 +2,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components.XMPProfilecomponents;
 
 public class XMPBuilder
 {
-    /*
-     * public string Name { get; }
-    public int Timing { get; private set; }
-    public int Voltage { get; private set; }
-    public int Frequency { get; private set; }
-     */
-
     private XMPProfile _xmp = new XMPProfile(" ");
 
     public XMPBuilder(string productName)

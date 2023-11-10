@@ -2,8 +2,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components;
 
 public interface IMotherboardBuilder
 {
-    public void Reset(string name);
-
     public void SocketNameBuild(string socket);
 
     public void PcieLineCountBuild(int count);

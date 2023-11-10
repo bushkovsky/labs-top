@@ -1,74 +1,65 @@
+using System.Collections.Generic;
+
 namespace Itmo.ObjectOrientedProgramming.Lab2.Components;
 
 public class MotherBoardBuilder : IMotherboardBuilder
 {
-    /*
-     * public string Name { get; }
-    public string SocketName { get; private set; } = " ";
-    public int PcieLineCount { get; private set; }
-    public int SataCount { get; private set; }
-    public Chipset ChipsetMotherboard { get; private set; } = new Chipset(" ", 0, false);
-    public string DDR { get; private set; } = " ";
-    public int RamCount { get; private set; }
-    public string FormFactor { get; private set; } = " ";
-    public BIOS Bios { get; private set; } = new BIOS();
-     */
-
-    private Motherboard _motherboard = new Motherboard(" ");
-
     public MotherBoardBuilder(string name)
     {
-        Reset(name);
+        Name = name;
     }
 
-    public void Reset(string name)
-    {
-        _motherboard = new Motherboard(name);
-    }
-
+    private string Name { get; set; }
+    private string SocketName { get; set; } = " ";
+    private int PcieLineCount { get; set; }
+    private int SataCount { get; set; }
+    private Chipset ChipsetMotherboard { get; set; } = new Chipset(" ", 0, false);
+    private string DDR { get; set; } = " ";
+    private int RamCount { get; set; }
+    private string FormFactor { get; set; } = " ";
+    private BIOS Bios { get; set; } = new BIOS(" ", new List<string>());
     public void SocketNameBuild(string socket)
     {
-        _motherboard.SetSocketName(socket);
+        SocketName = socket;
     }
 
     public void PcieLineCountBuild(int count)
     {
-        _motherboard.SetPcieLineCount(count);
+        PcieLineCount = count;
     }
 
     public void SataCountBuild(int count)
     {
-        _motherboard.SetSataCount(count);
+        SataCount = count;
     }
 
     public void ChipsetMotherboardBuild(Chipset chipsetMotherboard)
     {
-        _motherboard.SetChipsetMotherboard(chipsetMotherboard);
+        ChipsetMotherboard = chipsetMotherboard;
     }
 
     public void DDRBuild(string ddr)
     {
-        _motherboard.SetDDR(ddr);
+        DDR = ddr;
     }
 
     public void RamCountBuild(int count)
     {
-        _motherboard.SetRamCount(count);
+        RamCount = count;
     }
 
     public void FormFactorBuild(string formFactor)
     {
-        _motherboard.SetFormFactor(formFactor);
+        FormFactor = formFactor;
     }
 
     public void BIOSBuild(BIOS bios)
     {
-        _motherboard.SetBios(bios);
+        Bios = bios;
     }
 
     public void Debuild(Motherboard motherboard, string newName)
     {
-        Reset(newName);
         SocketNameBuild(motherboard.SocketName);
         PcieLineCountBuild(motherboard.PcieLineCount);
         SataCountBuild(motherboard.SataCount);
@@ -81,8 +72,15 @@ public class MotherBoardBuilder : IMotherboardBuilder
 
     public Motherboard GetMotherboard()
     {
-        Motherboard result = _motherboard;
-        Reset(" ");
+        var result = new Motherboard(Name);
+        result.SetBios(Bios);
+        result.SetChipsetMotherboard(ChipsetMotherboard);
+        result.SetFormFactor(FormFactor);
+        result.SetSataCount(SataCount);
+        result.SetRamCount(RamCount);
+        result.SetSocketName(SocketName);
+        result.SetDDR(DDR);
+        result.SetPcieLineCount(PcieLineCount);
         return result;
     }
 }

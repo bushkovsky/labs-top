@@ -2,17 +2,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components;
 
 public class CPUBuilder : ICPUBuilder
 {
-    /*
-     * public string Name { get; }
-    public int CoreFrequency { get; private set; }
-    public int CountCore { get; private set; }
-    public string Socket { get; private set; } = " ";
-    public bool GraficModification { get; private set; }
-    public int MemoryFrequency { get; private set; }
-    public int TDP { get; private set; }
-    public int Power { get; private set; }
-     */
-
     private CPU _cpu = new CPU(" ");
 
     public CPUBuilder(string name)

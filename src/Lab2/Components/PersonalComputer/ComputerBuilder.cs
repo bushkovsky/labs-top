@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.Components.GraficCardcomponents;
 using Itmo.ObjectOrientedProgramming.Lab2.Components.HDDcomponents;
 using Itmo.ObjectOrientedProgramming.Lab2.Components.PowerSupplycomponents;
@@ -13,15 +14,21 @@ public class ComputerBuilder
 {
     public ComputerBuilder(string name)
     {
-        Reset(name);
+        Name = name;
     }
 
-    public Computer MyComputer { get; private set; } = new Computer(" ");
-
-    public void Reset(string name)
-    {
-        MyComputer = new Computer(name);
-    }
+    public CoolingSystem ComponentCoolingSystem { get; private set; } = new CoolingSystem(" ", new List<string>());
+    public CPU ComponentCPU { get; private set; } = new CPU(" ");
+    public GraficCard? ComponentGraficCard { get; private set; }
+    public HDD? ComponentHdd { get; private set; }
+    public Motherboard ComponentMotherboard { get; private set; } = new Motherboard(" ");
+    public PowerSupply ComponentPowerSupply { get; private set; } = new PowerSupply(" ");
+    public RAM ComponentRam { get; private set; } = new RAM(" ", new List<string>());
+    public SSD? ComponentSSD { get; private set; }
+    public WIFIModule? ComponentWifiModule { get; private set; }
+    public XMPProfile? ComponentXmpProfile { get; private set; }
+    public ComputerCase ComponentComputerCase { get; private set; } = new ComputerCase(" ");
+    public string Name { get; private set; } = " ";
 
     public void ComputerCaseBuild(ComputerCase computerCase)
     {
@@ -32,7 +39,7 @@ public class ComputerBuilder
         builder.WidthBuild(computerCase.Width);
         builder.LengthBuild(computerCase.Length);
         builder.HeightBuild(computerCase.Height);
-        MyComputer.SetComputerCase(builder.GetComputerCase());
+        ComponentComputerCase = builder.GetComputerCase();
     }
 
     public string CoolingSystemBuild(CoolingSystem coolingSystem)
@@ -40,19 +47,19 @@ public class ComputerBuilder
         var builder = new CoolingSystemBuilder(coolingSystem.Name, coolingSystem.Sockets);
         builder.TDPBuild(coolingSystem.TDP);
         builder.SizeBuild(coolingSystem.Size);
-        MyComputer.SetCoolingSystem(builder.GetCoolingSystem());
+        ComponentCoolingSystem = builder.GetCoolingSystem();
 
-        if (!MyComputer.PcCoolingSystem.Sockets.Contains(MyComputer.PcCpu.Socket))
+        if (!ComponentCoolingSystem.Sockets.Contains(ComponentCPU.Socket))
         {
             return "Socket of cooling system not the same socket of cpu";
         }
 
-        if (MyComputer.PcCoolingSystem.Size > MyComputer.Case.Width)
+        if (ComponentCoolingSystem.Size > ComponentComputerCase.Width)
         {
             return "Size of cooling system bigger then width of case";
         }
 
-        if (MyComputer.PcCoolingSystem.TDP < MyComputer.PcCpu.TDP)
+        if (ComponentCoolingSystem.TDP < ComponentCPU.TDP)
         {
             return "Success, but disclaimer of warranty obligations";
         }
@@ -70,18 +77,18 @@ public class ComputerBuilder
         builder.MemoryFrequencyBuild(cpu.MemoryFrequency);
         builder.TDPBuild(cpu.TDP);
         builder.PowerBuild(cpu.Power);
-        MyComputer.SetCPU(builder.GetCPU());
-        if (MyComputer.PcMotherboard.SocketName != MyComputer.PcCpu.Socket)
+        ComponentCPU = builder.GetCPU();
+        if (ComponentMotherboard.SocketName != ComponentCPU.Socket)
         {
             return "Sockets of motherboard and cpu not the same";
         }
 
-        if (!MyComputer.PcMotherboard.Bios.SupportedProcessors.Contains(MyComputer.PcCpu.Name))
+        if (!ComponentMotherboard.Bios.SupportedProcessors.Contains(ComponentCPU.Name))
         {
             return "Bios can't use with this CPU";
         }
 
-        if (MyComputer.PcXmpProfile is not null && !(MyComputer.PcCpu.MemoryFrequency == MyComputer.PcXmpProfile.Frequency))
+        if (ComponentXmpProfile is not null && !(ComponentCPU.MemoryFrequency == ComponentXmpProfile.Frequency))
         {
             return "CPU can't work with this xmp";
         }
@@ -97,9 +104,9 @@ public class ComputerBuilder
         builder.VersionPciEBuild(graficCard.VersionPciE);
         builder.PowerBuild(graficCard.Power);
         builder.ChipFrequencyBuild(graficCard.ChipFrequency);
-        MyComputer.SetGraficCard(builder.GetGraficCard());
-        if (MyComputer.PcGraficCard is not null && (MyComputer.PcGraficCard.HeightCard > MyComputer.Case.Width
-                                                   || MyComputer.PcGraficCard.WidthCard > MyComputer.Case.Length))
+        ComponentGraficCard = builder.GetGraficCard();
+        if (ComponentGraficCard is not null && (ComponentGraficCard.HeightCard > ComponentComputerCase.Width
+                                                 || ComponentGraficCard.WidthCard > ComponentComputerCase.Length))
         {
             return "very big grafic card";
         }
@@ -113,8 +120,8 @@ public class ComputerBuilder
         builder.MemoryBuild(hdd.Memory);
         builder.RotationSpeedBuild(hdd.RotationSpeed);
         builder.PowerBuild(hdd.Power);
-        MyComputer.SetHDD(builder.GetHdd());
-        if (MyComputer.PcHDD is null && MyComputer.PcSSD is null)
+        ComponentHdd = builder.GetHdd();
+        if (ComponentHdd is null && ComponentSSD is null)
         {
             return "No data storage";
         }
@@ -133,8 +140,8 @@ public class ComputerBuilder
         builder.RamCountBuild(motherboard.RamCount);
         builder.FormFactorBuild(motherboard.FormFactor);
         builder.BIOSBuild(motherboard.Bios);
-        MyComputer.SetMotherboard(builder.GetMotherboard());
-        if (MyComputer.PcMotherboard.FormFactor == MyComputer.Case.FormFactor)
+        ComponentMotherboard = builder.GetMotherboard();
+        if (ComponentMotherboard.FormFactor == ComponentComputerCase.FormFactor)
         {
             return "Success";
         }
@@ -146,19 +153,19 @@ public class ComputerBuilder
     {
         var builder = new PowerSupplyBuilder(powerSupply.Name);
         builder.LoadPowerBuild(powerSupply.LoadPower);
-        MyComputer.SetPowerSupply(builder.GetPowerSupply());
-        if (MyComputer.PcGraficCard is not null && MyComputer.PcSSD is not null && MyComputer.PcHDD is null &&
-            MyComputer.PcWifiModule is not null &&
-            MyComputer.PcCpu.Power + MyComputer.PcGraficCard.Power + MyComputer.PcSSD.Power +
-            MyComputer.PcWifiModule.Power > MyComputer.PcPowerSupply.LoadPower)
+        ComponentPowerSupply = builder.GetPowerSupply();
+        if (ComponentGraficCard is not null && ComponentSSD is not null && ComponentHdd is null &&
+            ComponentWifiModule is not null &&
+            ComponentCPU.Power + ComponentGraficCard.Power + ComponentSSD.Power +
+            ComponentWifiModule.Power > ComponentPowerSupply.LoadPower)
         {
             return "Success, but not enought power in power supply";
         }
 
-        if (MyComputer.PcGraficCard is not null && MyComputer.PcSSD is null && MyComputer.PcHDD is not null &&
-            MyComputer.PcWifiModule is not null &&
-            MyComputer.PcCpu.Power + MyComputer.PcGraficCard.Power + MyComputer.PcHDD.Power +
-            MyComputer.PcWifiModule.Power > MyComputer.PcPowerSupply.LoadPower)
+        if (ComponentGraficCard is not null && ComponentSSD is null && ComponentHdd is not null &&
+            ComponentWifiModule is not null &&
+            ComponentCPU.Power + ComponentGraficCard.Power + ComponentHdd.Power +
+            ComponentWifiModule.Power > ComponentPowerSupply.LoadPower)
         {
             return "Success, but not enought power in power supply";
         }
@@ -179,8 +186,8 @@ public class ComputerBuilder
             builder.Add(i);
         }
 
-        MyComputer.SetRAM(builder.GetRAM());
-        if (MyComputer.PcXmpProfile is not null && !MyComputer.PcRam.XmpList.Contains(MyComputer.PcXmpProfile.Name))
+        ComponentRam = builder.GetRAM();
+        if (ComponentXmpProfile is not null && !ComponentRam.XmpList.Contains(ComponentXmpProfile.Name))
         {
             return "RAM can't work with this XMP";
         }
@@ -195,18 +202,18 @@ public class ComputerBuilder
         builder.MaxSpeedWorkBuild(ssd.MaxSpeedWork);
         builder.PowerBuild(ssd.Power);
         builder.ConnectionOptionBuild(ssd.Option);
-        MyComputer.SetSSD(builder.GetSSD());
-        if (MyComputer.PcHDD is null && MyComputer.PcSSD is null)
+        ComponentSSD = builder.GetSSD();
+        if (ComponentHdd is null && ComponentSSD is null)
         {
             return "No data storage";
         }
 
-        if (MyComputer.PcSSD is not null && MyComputer.PcSSD.Option == ConnectionOption.PCIE && MyComputer.PcMotherboard.SataCount < 1)
+        if (ComponentSSD is not null && ComponentSSD.Option == ConnectionOption.PCIE && ComponentMotherboard.SataCount < 1)
         {
             return "no sota in motherboard";
         }
 
-        if (MyComputer.PcSSD is not null && MyComputer.PcSSD.Option == ConnectionOption.PCIE && MyComputer.PcMotherboard.PcieLineCount < 1)
+        if (ComponentSSD is not null && ComponentSSD.Option == ConnectionOption.PCIE && ComponentMotherboard.PcieLineCount < 1)
         {
             return "no sota in motherboard";
         }
@@ -221,7 +228,7 @@ public class ComputerBuilder
         builder.BluetoothBuild(wifiModule.Bluetooth);
         builder.PciEBuild(wifiModule.PCIE);
         builder.PowerBuild(wifiModule.Power);
-        MyComputer.SetWIFIModule(builder.GetWiFIModule());
+        ComponentWifiModule = builder.GetWiFIModule();
         return "Success";
     }
 
@@ -231,7 +238,7 @@ public class ComputerBuilder
         builder.TimeBuild(xmp.Timing);
         builder.VoltageBuild(xmp.Voltage);
         builder.FrequencyBuild(xmp.Frequency);
-        MyComputer.SetXMPProfile(builder.GetXmpProfile());
+        ComponentXmpProfile = builder.GetXmpProfile();
         return "Success";
     }
 }

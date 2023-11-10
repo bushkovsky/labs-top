@@ -4,12 +4,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components;
 
 public class CoolingSystemBuilder : ICoolingSystemBuilder
 {
-    /*
-     * public string Name { get; }
-    public IList<string> Sockets { get; private set; }
-    public int TDP { get; private set; }
-     */
-
     private CoolingSystem _coolingSystem = new CoolingSystem(" ", new List<string>());
 
     public CoolingSystemBuilder(string name, IList<string> sockets)

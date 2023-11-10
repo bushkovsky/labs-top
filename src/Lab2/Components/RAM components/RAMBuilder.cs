@@ -4,15 +4,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components.RAMcomponents;
 
 public class RAMBuilder : IRAMBuilder
 {
-    /*
-     *
-     * public string Name { get; }
-    public int Memory { get; private set; }
-    public int Voltage { get; private set; }
-    public int JEDEC { get; private set; }
-    public string FormFactor { get; private set; } = " ";
-    public int DDRVersion { get; private set; }
-     */
     private RAM _ram = new RAM(" ", new List<string>());
     public RAMBuilder(string productName)
     {

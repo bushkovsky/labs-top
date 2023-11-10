@@ -2,14 +2,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.Components.SSDcomponents;
 
 public class SSDBuilder : ISSDBuilder
 {
-    /*
-     *  public string Name { get; private set; }
-    public int Memory { get; private set; }
-    public int MaxSpeedWork { get; private set; }
-    public int Power { get; private set; }
-    public ConnectionOption Option { get; private set; }
-     */
-
     private SSD _ssd = new SSD(" ");
 
     public SSDBuilder(string productName)
