@@ -14,7 +14,6 @@ public class UserBuilder
     private string BirthPlace { get; set; } = " ";
     private string Sex { get; set; } = " ";
     private string WorkingPosition { get; set; } = " ";
-    private int Level { get; set; }
 
     public void FirstNameBuilder(string firstName)
     {
@@ -61,11 +60,6 @@ public class UserBuilder
         Age = age;
     }
 
-    public void LevelBuilder(int level)
-    {
-        Level = level;
-    }
-
     public User GetResult()
     {
         var result = new User();
@@ -78,7 +72,6 @@ public class UserBuilder
         result.SetFirstName(FirstName);
         result.SetSureName(SureName);
         result.SetWorkingPosition(WorkingPosition);
-        result.SetLevel(Level);
 
         return result;
     }

@@ -1,20 +1,22 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Displays;
 
-public class DisplayDriver : IDisplay
+public static class DisplayDriver
 {
-    public DisplayDriver(IDisplay display)
+    public static Massage SetText(string title, string body, int level)
     {
-        ConcreteDisplay = display;
-        OutputMassage = display.OutputMassage;
+        return new Massage(title, body, level);
     }
 
-    public Massage OutputMassage { get; }
-    protected IDisplay ConcreteDisplay { get; private protected set; }
-
-    public void OutputOnDisplay(Colors color)
+    public static Color SetColor(int red, int green, int blue)
     {
-        ConcreteDisplay.OutputOnDisplay(color);
+        return new Color(red, green, blue);
+    }
+
+    public static void ClearDisplay()
+    {
+        Console.Clear();
     }
 }

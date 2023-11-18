@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
-using Itmo.ObjectOrientedProgramming.Lab3.Messengers;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Addressee;
 
@@ -10,42 +8,39 @@ public class GroupAddressee : IAddressee
 {
     private IList<IAddressee> _addressees;
 
-    public GroupAddressee(IList<IAddressee> addressees)
+    public GroupAddressee(IList<IAddressee> addressees, ILogger logger)
     {
         _addressees = addressees;
-        OutputMassage = new Massage(" ", " ", -1);
+        LoggerGroup = logger;
     }
 
-    public Massage OutputMassage { get; }
+    public ILogger LoggerGroup { get; }
 
-    public void LogAccess()
+    public void SendMassage(Massage massage, Color color)
     {
-        Console.WriteLine("List of adressees is processed");
-    }
-
-    public void ProcessedAddressees(Massage massage, Colors color)
-    {
-        LogAccess();
+        LoggerGroup.LogAccess();
         foreach (IAddressee i in _addressees)
         {
-            if (i is UserAddressee userAddressee)
-            {
-                userAddressee.AddMassage(massage);
-            }
+            i.SendMassage(massage, color);
+        }
+    }
 
-            if (i is DisplayAddressee displayAddressee)
-            {
-                var displayNewTextDriver = new DisplayNewTextDriver(displayAddressee.DisplayON);
-                displayNewTextDriver.OutputOnDisplay(color);
-            }
+    public bool LevelFilter(int level, Massage massage)
+    {
+        return massage.RelevanceLevel <= level;
+    }
 
-            if (i is Messenger messenger)
+    public bool SendMassageFilter(Massage massage, Color color, int level)
+    {
+        LoggerGroup.LogAccess();
+        foreach (IAddressee i in _addressees)
+        {
+            if (!i.SendMassageFilter(massage, color, level))
             {
-                var massages = new List<Massage>();
-                massages.Add(massage);
-
-                messenger.PrintMassage(massages);
+                return false;
             }
         }
+
+        return true;
     }
 }

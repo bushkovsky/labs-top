@@ -4,5 +4,5 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Users;
 
 public interface IUser
 {
-    public bool AddMassage(Massage massage);
+    public void AddMassage(Massage massage);
 }

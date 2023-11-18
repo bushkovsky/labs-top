@@ -15,18 +15,11 @@ public class User : IUser
     public string BirthPlace { get; private set; } = " ";
     public string Sex { get; private set; } = " ";
     public string WorkingPosition { get; private set; } = " ";
-    public int Level { get; private set; }
 
-    public bool AddMassage(Massage massage)
+    public void AddMassage(Massage massage)
     {
-        if (massage.RelevanceLevel > Level)
-        {
-            return false;
-        }
-
         var userMassage = new UserMassage(massage, "Unread");
         Massages.Add(userMassage);
-        return true;
     }
 
     public void SetMassages(IList<UserMassage> massages)
@@ -90,10 +83,5 @@ public class User : IUser
     public void SetAge(int age)
     {
         Age = age;
-    }
-
-    public void SetLevel(int level)
-    {
-        Level = level;
     }
 }

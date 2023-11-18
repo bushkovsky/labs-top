@@ -1,29 +1,39 @@
-using System;
 using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Addressee;
 
-public class DisplayAddressee : IAddressee, IDisplay
+public class DisplayAddressee : IAddressee
 {
-    public DisplayAddressee(Display display)
+    public DisplayAddressee(Display display, ILogger logger)
     {
         DisplayON = display;
+        LoggerDisplay = logger;
+
         OutputMassage = display.OutputMassage;
     }
 
-    public Display DisplayON { get; }
+    public IDisplay DisplayON { get; }
+    public ILogger LoggerDisplay { get; }
 
     public Massage OutputMassage { get; }
 
-    public void LogAccess()
+    public void SendMassage(Massage massage, Color color)
     {
-        Console.WriteLine("Proxy: Display write massage ");
+        LoggerDisplay.LogAccess();
+        DisplayON.UpdateMassage(massage);
+        DisplayON.OutputOnDisplay(color.Red, color.Blue, color.Green);
     }
 
-    public void OutputOnDisplay(Colors color)
+    public bool LevelFilter(int level, Massage massage)
     {
-       DisplayON.OutputOnDisplay(color);
-       LogAccess();
+        return massage.RelevanceLevel <= level;
+    }
+
+    public bool SendMassageFilter(Massage massage, Color color, int level)
+    {
+        if (!LevelFilter(level, massage)) return false;
+        SendMassage(massage, color);
+        return true;
     }
 }

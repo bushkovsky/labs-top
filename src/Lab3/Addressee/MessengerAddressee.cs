@@ -1,27 +1,35 @@
-using System;
-using System.Collections.Generic;
+using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 using Itmo.ObjectOrientedProgramming.Lab3.Messengers;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Addressee;
 
-public class MessengerAddressee : IAddressee, IMessenger
+public class MessengerAddressee : IAddressee
 {
-    private Messenger _messenger;
-
-    public MessengerAddressee(Messenger messenger)
+    public MessengerAddressee(Messenger messenger, ILogger loggerMessenger)
     {
-        _messenger = messenger;
+        Messenger = messenger;
+        LoggerMessenger = loggerMessenger;
     }
 
-    public void LogAccess()
+    public Messenger Messenger { get; }
+    public ILogger LoggerMessenger { get; }
+
+    public void SendMassage(Massage massage, Color color)
     {
-        Console.WriteLine("Proxy: Messenger get massage ");
+        LoggerMessenger.LogAccess();
+        Messenger.PrintMassage(massage);
     }
 
-    public string PrintMassage(IEnumerable<Massage> massages)
+    public bool LevelFilter(int level, Massage massage)
     {
-        LogAccess();
-        return _messenger.PrintMassage(massages);
+        return massage.RelevanceLevel <= level;
+    }
+
+    public bool SendMassageFilter(Massage massage, Color color, int level)
+    {
+        if (!LevelFilter(level, massage)) return false;
+        SendMassage(massage, color);
+        return true;
     }
 }

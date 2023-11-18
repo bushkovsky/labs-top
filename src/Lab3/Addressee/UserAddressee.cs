@@ -1,42 +1,34 @@
-using System;
-using System.Linq;
+using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 using Itmo.ObjectOrientedProgramming.Lab3.Users;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Addressee;
 
-public class UserAddressee : IAddressee, IUser
+public class UserAddressee : IAddressee
 {
     private User _user;
-    private int _level;
-    public UserAddressee(User user, int level)
+    public UserAddressee(User user, ILogger loggerUser)
     {
         _user = user;
-        _level = level;
+        LoggerUser = loggerUser;
     }
 
-    public void LogAccess()
+    public ILogger LoggerUser { get; }
+
+    public void SendMassage(Massage massage, Color color)
     {
-        Console.WriteLine("Proxy: User get massage ");
+        _user.AddMassage(massage);
     }
 
-    public bool AddMassage(Massage massage)
+    public bool LevelFilter(int level, Massage massage)
     {
-        if (massage.RelevanceLevel > _level)
-        {
-            return false;
-        }
-
-        LogAccess();
-        return _user.AddMassage(massage);
+        return massage.RelevanceLevel <= level;
     }
 
-    public void SortMassages()
+    public bool SendMassageFilter(Massage massage, Color color, int level)
     {
-        var tmpMassages = _user.Massages.ToList();
-
-        tmpMassages.Sort(UserMassage.Comparelevel);
-
-        _user.SetMassages(tmpMassages);
+        if (!LevelFilter(level, massage)) return false;
+        SendMassage(massage, color);
+        return true;
     }
 }

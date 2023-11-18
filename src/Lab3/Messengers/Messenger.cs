@@ -1,20 +1,15 @@
 using System;
-using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Messengers;
 
 public class Messenger : IMessenger
 {
-    public string PrintMassage(IEnumerable<Massage> massages)
+    public string PrintMassage(Massage massage)
     {
         string result = " ";
-        foreach (Massage i in massages)
-        {
-            result += "Massanger: " + i.Title + "\n" + i.Body;
-            Console.WriteLine("Massanger: " + i.Title + "\n" + i.Body);
-        }
-
+        Console.WriteLine("Massanger: " + massage.Title + "\n" + massage.Body);
+        result += "Massanger: " + massage.Title + "\n" + massage.Body;
         return result;
     }
 }
