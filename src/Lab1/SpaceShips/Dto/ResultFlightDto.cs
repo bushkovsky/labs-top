@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceShips.Dto;
 
-public class ResultFLightDto
+public record ResultFLightDto
 {
     public ResultFLightDto(double fuelConsumption, bool b, double flightTime)
     {
