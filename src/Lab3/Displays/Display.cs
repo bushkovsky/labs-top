@@ -15,18 +15,8 @@ public class Display : IDisplay
     {
         DisplayDriver.ClearDisplay();
         DisplayDriver.SetColor(red, green, blue);
-        if (red == 1)
-        {
-            Console.WriteLine(Crayon.Output.Red("Massage" + OutputMassage.Title + "\n" + OutputMassage.Body));
-        }
-        else if (green == 1)
-        {
-            Console.WriteLine(Crayon.Output.Green("Massage" + OutputMassage.Title + "\n" + OutputMassage.Body));
-        }
-        else if (blue == 1)
-        {
-            Console.WriteLine(Crayon.Output.Blue("Massage" + OutputMassage.Title + "\n" + OutputMassage.Body));
-        }
+        string text = Crayon.Output.Rgb((byte)red, (byte)green, (byte)blue).Text(" Massanger: " + OutputMassage.Title + "\n" + OutputMassage.Body);
+        Console.WriteLine(text);
     }
 
     public void UpdateMassage(Massage massage)
