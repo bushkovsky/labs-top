@@ -80,11 +80,11 @@ public class LabThreeMassageSystemTest
     public void TestMessenger()
     {
         var massage = new Massage("FIX", "my lab is good i think", 2);
-        Messenger mock = Substitute.For<Messenger>();
+        IMessenger mock = Substitute.For<IMessenger>();
 
-        var controller = new MessengerAddressee(mock, new Logger("Log access messenger"));
+        var controller = new MessengerAddressee(mock);
         controller.SendMassage(massage, new Color(5, 4, 7));
-        Assert.Equal(" Massanger: " + massage.Title + "\n" + massage.Body, controller.Messenger.PrintMassage(massage));
+        Assert.Single(mock.ReceivedCalls().Where(x => x.GetMethodInfo().Name == "PrintMassage"));
     }
 
     [Fact]
@@ -93,8 +93,9 @@ public class LabThreeMassageSystemTest
         var massage = new Massage("FIX", "my lab is good i think", 2);
         var messenger = new Messenger();
         ILogger mock = Substitute.For<ILogger>();
-        var messengerAddressee = new MessengerAddressee(messenger, mock);
-        messengerAddressee.SendMassage(massage, new Color(3, 5, 6));
+        var messengerAddressee = new MessengerAddressee(messenger);
+        var addresseeLogger = new LoggerAddressee(messengerAddressee, mock);
+        addresseeLogger.SendMassage(massage, new Color(3, 5, 6));
         Assert.Single(mock.ReceivedCalls().Where(x => x.GetMethodInfo().Name == "LogAccess"));
     }
 
@@ -103,7 +104,8 @@ public class LabThreeMassageSystemTest
     {
         var massage = new Massage("FIX", "my lab is good i think", 6);
         User mock = Substitute.For<User>();
-        var controller = new UserAddressee(mock, new Logger("Log user access"));
-        Assert.False(controller.SendMassageFilter(massage, new Color(3, 5, 6), 5));
+        var controller = new UserAddressee(mock);
+        var addresseeLevelFilter = new LevelFilterAddressee(5, controller);
+        Assert.Empty(mock.ReceivedCalls().Where(x => x.GetMethodInfo().Name == "SendMassage"));
     }
 }

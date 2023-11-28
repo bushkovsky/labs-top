@@ -4,74 +4,79 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Users;
 
 public class UserBuilder
 {
-    public IList<UserMassage> Massages { get; private set; } = new List<UserMassage>();
-    private string FirstName { get; set; } = " ";
-    private string SureName { get; set; } = " ";
-    private string City { get; set; } = " ";
-    private string Street { get; set; } = " ";
-    private int House { get; set; }
-    private int Age { get; set; }
-    private string BirthPlace { get; set; } = " ";
-    private string Sex { get; set; } = " ";
-    private string WorkingPosition { get; set; } = " ";
+    private IList<UserMassage> _massages = new List<UserMassage>();
+    private string _firstName = " ";
+    private string _sureName = " ";
+    private string _city = " ";
+    private string _street = " ";
+    private int _house;
+    private int _age;
+    private string _birthPlace = " ";
+    private string _sex = " ";
+    private string _workingPosition = " ";
 
     public void FirstNameBuilder(string firstName)
     {
-        FirstName = firstName;
+        _firstName = firstName;
     }
 
     public void SureNameBuilder(string sureName)
     {
-        SureName = sureName;
+        _sureName = sureName;
     }
 
     public void CityBuilder(string city)
     {
-        City = city;
+        _city = city;
     }
 
     public void StreetBuilder(string street)
     {
-        Street = street;
+        _street = street;
     }
 
     public void BirthPlaceBuilder(string birthPlace)
     {
-        BirthPlace = birthPlace;
+        _birthPlace = birthPlace;
     }
 
     public void SexBuilder(string sex)
     {
-        Sex = sex;
+        _sex = sex;
     }
 
     public void WorkingPositionBuilder(string workingPosition)
     {
-        WorkingPosition = workingPosition;
+        _workingPosition = workingPosition;
     }
 
     public void HouseBuilder(int house)
     {
-        House = house;
+        _house = house;
     }
 
     public void AgeBuilder(int age)
     {
-        Age = age;
+        _age = age;
+    }
+
+    public void AddItemBuilder(UserMassage userMassage)
+    {
+        _massages.Add(userMassage);
     }
 
     public User GetResult()
     {
         var result = new User();
-        result.SetAge(Age);
-        result.SetCity(City);
-        result.SetHouse(House);
-        result.SetSex(Sex);
-        result.SetStreet(Street);
-        result.SetBirthPlace(BirthPlace);
-        result.SetFirstName(FirstName);
-        result.SetSureName(SureName);
-        result.SetWorkingPosition(WorkingPosition);
+        result.SetAge(_age);
+        result.SetCity(_city);
+        result.SetHouse(_house);
+        result.SetSex(_sex);
+        result.SetStreet(_street);
+        result.SetBirthPlace(_birthPlace);
+        result.SetFirstName(_firstName);
+        result.SetSureName(_sureName);
+        result.SetWorkingPosition(_workingPosition);
 
         return result;
     }

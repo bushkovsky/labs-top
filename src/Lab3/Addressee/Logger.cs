@@ -1,4 +1,5 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Addressee;
 
@@ -11,8 +12,8 @@ public record Logger : ILogger
         _logMassage = logMassage;
     }
 
-    public void LogAccess()
+    public void LogAccess(Massage message, IAddressee addressee)
     {
-        Console.WriteLine(_logMassage);
+        Console.WriteLine("Log:" + message.Title + "was send to" + addressee.ToString());
     }
 }

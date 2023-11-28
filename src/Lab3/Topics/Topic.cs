@@ -19,9 +19,4 @@ public class Topic
     {
         Addressee.SendMassage(massage, color);
     }
-
-    public bool SendToAddresseeWithFilter(Massage massage, Color color, int level)
-    {
-        return Addressee.SendMassageFilter(massage, color, level);
-    }
 }

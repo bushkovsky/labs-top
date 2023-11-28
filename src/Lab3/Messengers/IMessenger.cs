@@ -4,5 +4,5 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Messengers;
 
 public interface IMessenger
 {
-    public string PrintMassage(Massage massage);
+    public void PrintMassage(Massage massage);
 }
