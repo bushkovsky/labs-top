@@ -1,4 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 using Itmo.ObjectOrientedProgramming.Lab3.Messengers;
 
@@ -12,7 +11,7 @@ public class MessengerAddressee : IAddressee
     }
 
     public IMessenger Messenger { get; }
-    public void SendMassage(Massage massage, Color color)
+    public void SendMassage(Massage massage)
     {
         Messenger.PrintMassage(massage);
     }

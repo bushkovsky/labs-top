@@ -1,5 +1,4 @@
 using Itmo.ObjectOrientedProgramming.Lab3.Addressee;
-using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Topics;
@@ -15,8 +14,8 @@ public class Topic
     public string Name { get; }
     public IAddressee Addressee { get; }
 
-    public void SendToAddressee(Massage massage, Color color)
+    public void SendToAddressee(Massage massage)
     {
-        Addressee.SendMassage(massage, color);
+        Addressee.SendMassage(massage);
     }
 }

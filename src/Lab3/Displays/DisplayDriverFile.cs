@@ -5,14 +5,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Displays;
 
 public class DisplayDriverFile : IDisplayDriver
 {
-    public Massage SetText(string title, string body, int level)
-    {
-        return new Massage(title, body, level);
-    }
+    private Color _color = new Color(0, 0, 0);
 
-    public Color SetColor(int red, int green, int blue)
+    public void SetColor(int red, int green, int blue)
     {
-        return new Color(red, green, blue);
+        _color = new Color(red, green, blue);
     }
 
     public void ClearDisplay()
@@ -22,8 +19,9 @@ public class DisplayDriverFile : IDisplayDriver
         writer.Close();
     }
 
-    public void Output(string text)
+    public void Output(Massage massage)
     {
+        string text = Crayon.Output.Rgb(_color.Red, _color.Blue, _color.Green).Text(" Massanger: " + massage.Title + "\n" + massage.Body);
         var writer = new StreamWriter(@"D:\output.txt");
         writer.Write(text);
         writer.Close();

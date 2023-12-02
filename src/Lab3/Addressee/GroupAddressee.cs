@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Addressee;
@@ -13,11 +12,11 @@ public class GroupAddressee : IAddressee
         _addressees = addressees;
     }
 
-    public void SendMassage(Massage massage, Color color)
+    public void SendMassage(Massage massage)
     {
-        foreach (IAddressee i in _addressees)
+        foreach (IAddressee addressee in _addressees)
         {
-            i.SendMassage(massage, color);
+            addressee.SendMassage(massage);
         }
     }
 }

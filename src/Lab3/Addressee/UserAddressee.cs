@@ -1,4 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 using Itmo.ObjectOrientedProgramming.Lab3.Users;
 
@@ -12,7 +11,7 @@ public class UserAddressee : IAddressee
         _user = user;
     }
 
-    public void SendMassage(Massage massage, Color color)
+    public void SendMassage(Massage massage)
     {
         _user.AddMassage(massage);
     }

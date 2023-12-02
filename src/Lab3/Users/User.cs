@@ -6,15 +6,15 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Users;
 public class User : IUser
 {
     public IList<UserMassage> Massages { get; private set; } = new List<UserMassage>();
-    public string FirstName { get; private set; } = " ";
-    public string SureName { get; private set; } = " ";
-    public string City { get; private set; } = " ";
-    public string Street { get; private set; } = " ";
+    public string FirstName { get; private set; } = string.Empty;
+    public string SureName { get; private set; } = string.Empty;
+    public string City { get; private set; } = string.Empty;
+    public string Street { get; private set; } = string.Empty;
     public int House { get; private set; }
     public int Age { get; private set; }
-    public string BirthPlace { get; private set; } = " ";
-    public string Sex { get; private set; } = " ";
-    public string WorkingPosition { get; private set; } = " ";
+    public string BirthPlace { get; private set; } = string.Empty;
+    public string Sex { get; private set; } = string.Empty;
+    public string WorkingPosition { get; private set; } = string.Empty;
 
     public void AddMassage(Massage massage)
     {

@@ -1,6 +1,5 @@
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab3.Addressee;
-using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 using Itmo.ObjectOrientedProgramming.Lab3.Messengers;
 using Itmo.ObjectOrientedProgramming.Lab3.Users;
@@ -83,7 +82,7 @@ public class LabThreeMassageSystemTest
         IMessenger mock = Substitute.For<IMessenger>();
 
         var controller = new MessengerAddressee(mock);
-        controller.SendMassage(massage, new Color(5, 4, 7));
+        controller.SendMassage(massage);
         Assert.Single(mock.ReceivedCalls().Where(x => x.GetMethodInfo().Name == "PrintMassage"));
     }
 
@@ -95,7 +94,7 @@ public class LabThreeMassageSystemTest
         ILogger mock = Substitute.For<ILogger>();
         var messengerAddressee = new MessengerAddressee(messenger);
         var addresseeLogger = new LoggerAddressee(messengerAddressee, mock);
-        addresseeLogger.SendMassage(massage, new Color(3, 5, 6));
+        addresseeLogger.SendMassage(massage);
         Assert.Single(mock.ReceivedCalls().Where(x => x.GetMethodInfo().Name == "LogAccess"));
     }
 

@@ -1,4 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab3.Displays;
 using Itmo.ObjectOrientedProgramming.Lab3.Massages;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.Addressee;
@@ -14,11 +13,11 @@ public class LevelFilterAddressee : IAddressee
         _addressee = addressee;
     }
 
-    public void SendMassage(Massage massage, Color color)
+    public void SendMassage(Massage massage)
     {
         if (massage.RelevanceLevel <= _level)
         {
-            _addressee.SendMassage(massage, color);
+            _addressee.SendMassage(massage);
         }
     }
 }

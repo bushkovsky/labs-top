@@ -8,15 +8,12 @@ public class DisplayAddressee : IAddressee
     public DisplayAddressee(Display display)
     {
         DisplayON = display;
-        OutputMassage = display.OutputMassage;
     }
 
     public IDisplay DisplayON { get; }
-    public Massage OutputMassage { get; }
 
-    public void SendMassage(Massage massage, Color color)
+    public void SendMassage(Massage massage)
     {
-        DisplayON.UpdateMassage(massage);
-        DisplayON.OutputOnDisplay(color.Red, color.Blue, color.Green);
+        DisplayON.OutputOnDisplay(massage);
     }
 }
