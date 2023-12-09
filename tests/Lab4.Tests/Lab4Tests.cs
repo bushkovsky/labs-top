@@ -11,7 +11,7 @@ public class Lab4Tests
     {
         var connectHandler = new ConnectHandler();
         Assert.Equal(new Connect("D:").GetType(), connectHandler.HandleRequest(@"connect [D:\\] [-m local]")?.GetType());
-        Assert.Equal("D:", ConnectHandler.AddresseParce(@"connect [D:\\] [-m local]"));
+        Assert.Equal("D:", ConnectHandler.AddressParse(@"connect [D:\\] [-m local]"));
     }
 
     [Fact]

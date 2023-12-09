@@ -9,7 +9,7 @@ public class FileDeleteHandler : CommandHendler
     {
         if (ParseRequest(request))
         {
-            return new FileDelete(ParseDelite(request));
+            return new FileDelete(ParseDelete(request));
         }
         else
         {
@@ -31,7 +31,7 @@ public class FileDeleteHandler : CommandHendler
         return false;
     }
 
-    private static string ParseDelite(string request)
+    private static string ParseDelete(string request)
     {
         var command = new List<string>(request.Split(' '));
         string result = string.Empty;

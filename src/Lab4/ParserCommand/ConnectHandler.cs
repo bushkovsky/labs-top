@@ -6,7 +6,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.ParserCommand;
 
 public class ConnectHandler : CommandHendler
 {
-    public static string AddresseParce(string request)
+    public static string AddressParse(string request)
     {
         var command = new List<string>(request.Split(' '));
         string result = string.Empty;
@@ -24,7 +24,7 @@ public class ConnectHandler : CommandHendler
         {
             if (MarkDefine(request) == Marks.M && ModeDefine(request) == Modes.Local)
             {
-                return new Connect(AddresseParce(request));
+                return new Connect(AddressParse(request));
             }
         }
         else
