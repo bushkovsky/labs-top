@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DomainModels\" />
-      <Folder Include="Ports\" />
+      <ProjectReference Include="..\ApplicationModels\ApplicationModels.csproj" />
+      <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     </ItemGroup>
 
 </Project>

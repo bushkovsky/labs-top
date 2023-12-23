@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DomainModels\" />
-      <Folder Include="Ports\" />
+      <PackageReference Include="FluentMigrator" />
+      <PackageReference Include="Npgsql" />
     </ItemGroup>
 
 </Project>
